@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'answer.dart';
-import 'question.dart';
+import 'quiz.dart';
+import 'result.dart';
 
 void main() => runApp(QuizApp());
 
@@ -12,7 +12,7 @@ class QuizApp extends StatefulWidget {
 
 class _QuizAppState extends State<QuizApp> {
   var _questionIndex = 0;
-  final questions = [
+  final _questions = [
     {
       'questionText': 'What\'s your favourite colour?',
       'answers': [
@@ -56,21 +56,13 @@ class _QuizAppState extends State<QuizApp> {
         appBar: AppBar(
           title: Text('Quiz'),
         ),
-        body: _questionIndex < questions.length
-            ? Column(
-                children: <Widget>[
-                  Question(
-                    questions[_questionIndex]['questionText'] as String,
-                  ),
-                  ...(questions[_questionIndex]['answers'] as List<String>)
-                      .map((answer) {
-                    return Answer(_answerQuestion, answer);
-                  }).toList()
-                ],
+        body: _questionIndex < _questions.length
+            ? Quiz(
+                answerCallback: _answerQuestion,
+                questionIndex: _questionIndex,
+                questions: _questions,
               )
-            : Center(
-                child: Text('Answers submitted'),
-              ),
+            : Result(),
       ),
     );
   }
