@@ -2,7 +2,8 @@
 *.class
 *.log
 *.pyc
-*.sw
+*.swp
+.DS_Store
 .atom/
 .buildlog/
 .history
@@ -42,4 +43,6 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
+
+.DS_Store
 *.code-workspace
