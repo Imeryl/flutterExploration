@@ -11,39 +11,80 @@ class QuizApp extends StatefulWidget {
 }
 
 class _QuizAppState extends State<QuizApp> {
+  var _totalScore = 0;
   var _questionIndex = 0;
   final _questions = [
     {
       'questionText': 'What\'s your favourite colour?',
       'answers': [
-        'Black',
-        'Red',
-        'Purple',
-        'Orange',
+        {
+          'text': 'Black',
+          'score': 2,
+        },
+        {
+          'text': 'Red',
+          'score': 4,
+        },
+        {
+          'text': 'Purple',
+          'score': 1,
+        },
+        {
+          'text': 'Orange',
+          'score': 7,
+        },
       ],
     },
     {
       'questionText': 'What\'s your favourite animal?',
       'answers': [
-        'Snake',
-        'Rabbit',
-        'Lion',
-        'Elephant',
+        {
+          'text': 'Snake',
+          'score': 1,
+        },
+        {
+          'text': 'Rabbit',
+          'score': 8,
+        },
+        {
+          'text': 'Lion',
+          'score': 10,
+        },
+        {
+          'text': 'Elephant',
+          'score': 5,
+        },
       ],
     },
     {
       'questionText': 'What\'s your favourite anime?',
       'answers': [
-        'Death Note',
-        'Code Geass',
-        'Made in Abyss',
-        'Birdie Wing',
+        {
+          'text': 'Death Note',
+          'score': 7,
+        },
+        {
+          'text': 'Code Geass',
+          'score': 5,
+        },
+        {
+          'text': 'Made in Abyss',
+          'score': 3,
+        },
+        {
+          'text': 'Birdie Wing',
+          'score': 1,
+        },
       ],
     },
   ];
 
-  void _answerQuestion() {
-    setState(() => _questionIndex++);
+  void _answerQuestion(int score) {
+    _totalScore += score;
+
+    setState(() {
+      _questionIndex++;
+    });
   }
 
   @override
@@ -62,7 +103,7 @@ class _QuizAppState extends State<QuizApp> {
                 questionIndex: _questionIndex,
                 questions: _questions,
               )
-            : Result(),
+            : Result(_totalScore),
       ),
     );
   }
