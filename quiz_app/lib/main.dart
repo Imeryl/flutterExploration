@@ -20,8 +20,33 @@ class _QuizAppState extends State<QuizApp> {
   @override
   Widget build(BuildContext context) {
     var questions = [
-      'What\'s your favourite colour?',
-      'What\'s your favourite animal?',
+      {
+        'questionText': 'What\'s your favourite colour?',
+        'answers': [
+          'Black',
+          'Red',
+          'Purple',
+          'Orange',
+        ],
+      },
+      {
+        'questionText': 'What\'s your favourite animal?',
+        'answers': [
+          'Snake',
+          'Rabbit',
+          'Lion',
+          'Elephant',
+        ],
+      },
+      {
+        'questionText': 'What\'s your favourite anime?',
+        'answers': [
+          'Death Note',
+          'Code Geass',
+          'Made in Abyss',
+          'Birdie Wing',
+        ],
+      },
     ];
 
     return MaterialApp(
@@ -34,10 +59,13 @@ class _QuizAppState extends State<QuizApp> {
         ),
         body: Column(
           children: <Widget>[
-            Question(questions[_questionIndex]),
-            Answer(_answerQuestion),
-            Answer(_answerQuestion),
-            Answer(_answerQuestion),
+            Question(
+              questions[_questionIndex]['questionText'] as String,
+            ),
+            ...(questions[_questionIndex]['answers'] as List<String>)
+                .map((answer) {
+              return Answer(_answerQuestion, answer);
+            }).toList()
           ],
         ),
       ),
