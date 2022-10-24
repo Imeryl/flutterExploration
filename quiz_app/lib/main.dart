@@ -19,7 +19,7 @@ class _QuizAppState extends State<QuizApp> {
 
   @override
   Widget build(BuildContext context) {
-    var questions = [
+    const questions = [
       {
         'questionText': 'What\'s your favourite colour?',
         'answers': [
