@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 class Result extends StatelessWidget {
+  final VoidCallback resetCallable;
   final int score;
 
-  Result(this.score);
+  Result(this.score, this.resetCallable);
 
   String get resultPhrase {
     var resultText = 'Answers submitted. ';
@@ -25,13 +26,21 @@ class Result extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: Center(
-        child: Text(
-          resultPhrase,
-          style: TextStyle(
-            fontSize: 28,
-            fontWeight: FontWeight.bold,
-          ),
-          textAlign: TextAlign.center,
+        child: Column(
+          children: [
+            Text(
+              resultPhrase,
+              style: TextStyle(
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            TextButton(
+              onPressed: resetCallable,
+              child: Text('Restart Quiz.'),
+            )
+          ],
         ),
       ),
     );
