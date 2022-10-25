@@ -90,7 +90,6 @@ class _MyHomePageState extends State<MyHomePage> {
             icon: Icon(Icons.add),
           ),
         ],
-        backgroundColor: Colors.purple,
         title: Text('Flutter App'),
       ),
       body: Container(
@@ -101,7 +100,7 @@ class _MyHomePageState extends State<MyHomePage> {
               TransactionList(
                 transactions: _userTransactions,
                 removeCallback: _deleteTransaction,
-              )
+              ),
             ],
           ),
         ),
