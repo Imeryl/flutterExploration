@@ -92,10 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              Card(
-                child: Chart(recentTransactions: _recentTransactions),
-                elevation: 5,
-              ),
+              Chart(recentTransactions: _recentTransactions),
               TransactionList(
                 transactions: _userTransactions,
               )
