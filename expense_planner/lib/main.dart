@@ -10,8 +10,22 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter App',
       home: MyHomePage(),
+      theme: ThemeData(
+        appBarTheme: AppBarTheme(
+          titleTextStyle: TextStyle(
+            fontFamily: 'OpenSans',
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        colorScheme: ColorScheme.light(
+          primary: Colors.purple,
+          secondary: Colors.blue,
+          tertiary: Colors.orange,
+        ),
+      ),
+      title: 'Flutter App',
     );
   }
 }
@@ -88,9 +102,17 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: Colors.purple,
-        icon: Icon(Icons.add),
-        label: Text('Add Transaction'),
+        backgroundColor: Theme.of(context).colorScheme.secondary,
+        icon: Icon(
+          Icons.add,
+          color: Theme.of(context).colorScheme.onSecondary,
+        ),
+        label: Text(
+          'Add Transaction',
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onSecondary,
+          ),
+        ),
         onPressed: () => showAddTransaction(context),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
