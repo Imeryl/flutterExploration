@@ -18,16 +18,14 @@ class Chart extends StatelessWidget {
       );
       double totalSum = 0;
       for (final transaction in recentTransactions) {
-        if (DateFormat.yMd(transaction.date) == DateFormat.yMd(weekDay)) {
+        if (DateFormat.yMd().format(transaction.date) ==
+            DateFormat.yMd().format(weekDay)) {
           totalSum += transaction.amount;
         }
       }
 
-      print(weekDay);
-      print(totalSum);
-
       return {
-        'day': DateFormat.E(weekDay),
+        'day': DateFormat.E().format(weekDay),
         'amount': totalSum,
       };
     });
