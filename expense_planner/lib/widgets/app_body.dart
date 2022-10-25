@@ -43,17 +43,19 @@ class _AppBodyState extends State<AppBody> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Column(
-        children: <Widget>[
-          Card(
-            child: Text('Chart'),
-            elevation: 5,
-          ),
-          NewTransaction(_addTransaction),
-          TransactionList(
-            transactions: _userTransactions,
-          )
-        ],
+      child: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            Card(
+              child: Text('Chart'),
+              elevation: 5,
+            ),
+            NewTransaction(_addTransaction),
+            TransactionList(
+              transactions: _userTransactions,
+            )
+          ],
+        ),
       ),
     );
   }
