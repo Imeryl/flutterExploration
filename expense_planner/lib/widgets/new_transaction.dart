@@ -31,7 +31,7 @@ class NewTransaction extends StatelessWidget {
               TextButton(
                 onPressed: () => addTransactionCallback(
                   titleController.text,
-                  amountController.text,
+                  double.parse(amountController.text),
                 ),
                 child: Text(
                   'Add Transaction',
