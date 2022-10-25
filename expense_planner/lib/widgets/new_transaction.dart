@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class NewTransaction extends StatefulWidget {
   final Function addTransactionCallback;
@@ -10,22 +11,39 @@ class NewTransaction extends StatefulWidget {
 }
 
 class _NewTransactionState extends State<NewTransaction> {
-  final amountController = TextEditingController();
+  final _amountController = TextEditingController();
+  final _dateController = TextEditingController();
+  final _titleController = TextEditingController();
+  DateTime? _selectedDate;
 
-  final titleController = TextEditingController();
+  void _submitData() {
+    final double enteredAmount = double.parse(_amountController.text);
+    final String enteredTitle = _titleController.text;
 
-  void submitData() {
-    final double enteredAmount = double.parse(amountController.text);
-    final String enteredTitle = titleController.text;
-
-    if (enteredAmount <= 0 || enteredTitle.isEmpty) return;
+    if (enteredAmount <= 0 || enteredTitle.isEmpty || _selectedDate == null)
+      return;
 
     widget.addTransactionCallback(
       enteredTitle,
       enteredAmount,
+      _selectedDate,
     );
 
     Navigator.of(context).pop();
+  }
+
+  void _showDatePicker() {
+    showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2019),
+      lastDate: DateTime.now(),
+    ).then((value) {
+      if (value == null) return;
+
+      _selectedDate = value;
+      setState(() => _dateController.text = DateFormat.yMd().format(value));
+    });
   }
 
   @override
@@ -37,27 +55,44 @@ class _NewTransactionState extends State<NewTransaction> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
-              TextField(
-                cursorColor: Colors.purple,
-                controller: titleController,
-                decoration: InputDecoration(
-                  label: Text('Title'),
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 10),
+                child: TextField(
+                  controller: _titleController,
+                  decoration: InputDecoration(
+                    label: Text('Title'),
+                  ),
                 ),
-                onSubmitted: (_) => submitData(),
               ),
-              TextField(
-                controller: amountController,
-                decoration: InputDecoration(
-                  label: Text('Amount'),
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 10),
+                child: TextField(
+                  controller: _amountController,
+                  decoration: InputDecoration(
+                    label: Text('Amount'),
+                  ),
+                  keyboardType: TextInputType.numberWithOptions(decimal: true),
                 ),
-                keyboardType: TextInputType.numberWithOptions(decimal: true),
-                onSubmitted: (_) => submitData(),
               ),
-              TextButton(
-                onPressed: submitData,
+              Container(
+                height: 70,
+                child: TextField(
+                  controller: _dateController,
+                  decoration: InputDecoration(
+                    icon: Icon(Icons.calendar_today),
+                    label: Text('Date'),
+                  ),
+                  readOnly: true,
+                  onTap: _showDatePicker,
+                ),
+              ),
+              ElevatedButton(
+                onPressed: _submitData,
                 child: Text(
                   'Add Transaction',
-                  style: TextStyle(color: Colors.purple),
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onPrimary,
+                  ),
                 ),
               ),
             ],
