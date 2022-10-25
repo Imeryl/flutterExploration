@@ -7,6 +7,18 @@ class NewTransaction extends StatelessWidget {
 
   NewTransaction(this.addTransactionCallback);
 
+  void submitData() {
+    final double enteredAmount = double.parse(amountController.text);
+    final String enteredTitle = titleController.text;
+
+    if (enteredAmount <= 0 || enteredTitle.isEmpty) return;
+
+    addTransactionCallback(
+      enteredTitle,
+      enteredAmount,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -17,22 +29,22 @@ class NewTransaction extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
               TextField(
+                controller: titleController,
                 decoration: InputDecoration(
                   label: Text('Title'),
                 ),
-                controller: titleController,
+                onSubmitted: (_) => submitData(),
               ),
               TextField(
+                controller: amountController,
                 decoration: InputDecoration(
                   label: Text('Amount'),
                 ),
-                controller: amountController,
+                keyboardType: TextInputType.numberWithOptions(decimal: true),
+                onSubmitted: (_) => submitData(),
               ),
               TextButton(
-                onPressed: () => addTransactionCallback(
-                  titleController.text,
-                  double.parse(amountController.text),
-                ),
+                onPressed: submitData,
                 child: Text(
                   'Add Transaction',
                   style: TextStyle(color: Colors.purple),
