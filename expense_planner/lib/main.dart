@@ -19,9 +19,22 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actions: <Widget>[
+          IconButton(
+            onPressed: null,
+            icon: Icon(Icons.add),
+          ),
+        ],
         title: Text('Flutter App'),
       ),
       body: AppBody(),
+      floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: Colors.purple,
+        icon: Icon(Icons.add),
+        label: Text('Add Transaction'),
+        onPressed: null,
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
