@@ -29,6 +29,7 @@ class NewTransaction extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
               TextField(
+                cursorColor: Colors.purple,
                 controller: titleController,
                 decoration: InputDecoration(
                   label: Text('Title'),

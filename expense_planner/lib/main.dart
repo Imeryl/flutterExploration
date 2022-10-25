@@ -25,6 +25,7 @@ class MyHomePage extends StatelessWidget {
             icon: Icon(Icons.add),
           ),
         ],
+        backgroundColor: Colors.purple,
         title: Text('Flutter App'),
       ),
       body: AppBody(),
