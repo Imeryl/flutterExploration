@@ -5,8 +5,9 @@ import '../models/transaction.dart';
 
 class TransactionList extends StatelessWidget {
   final List<Transaction> transactions;
+  final Function removeCallback;
 
-  TransactionList({required this.transactions});
+  TransactionList({required this.transactions, required this.removeCallback});
 
   @override
   Widget build(BuildContext context) {
@@ -60,6 +61,13 @@ class TransactionList extends StatelessWidget {
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
                       ),
+                    ),
+                    trailing: IconButton(
+                      icon: Icon(
+                        Icons.delete,
+                        color: Theme.of(context).colorScheme.error,
+                      ),
+                      onPressed: () => removeCallback(transactions[index].id),
                     ),
                   ),
                 );
