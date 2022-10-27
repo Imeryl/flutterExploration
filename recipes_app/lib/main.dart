@@ -17,9 +17,9 @@ class MyApp extends StatelessWidget {
         ),
         fontFamily: 'Raleway',
       ),
-      home: CategoriesScreen(),
       routes: {
-        '/category': (context) => CategoryScreen(),
+        '/': (context) => CategoriesScreen(),
+        CategoryScreen.routeName: (context) => CategoryScreen(),
       },
     );
   }
