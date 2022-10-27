@@ -14,7 +14,6 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.light(
           primary: Colors.purple,
-          secondary: Colors.pink,
         ),
         fontFamily: 'Raleway',
       ),
