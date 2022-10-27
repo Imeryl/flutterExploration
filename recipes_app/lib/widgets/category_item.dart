@@ -32,7 +32,15 @@ class CategoryItem extends StatelessWidget {
       splashColor: Theme.of(context).colorScheme.primary,
       child: Container(
         padding: const EdgeInsets.all(15),
-        child: Text(title),
+        child: Text(
+          title,
+          style: TextStyle(
+            color:
+                ThemeData.estimateBrightnessForColor(color) == Brightness.light
+                    ? Colors.black
+                    : Colors.white,
+          ),
+        ),
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [color.withOpacity(0.7), color],
