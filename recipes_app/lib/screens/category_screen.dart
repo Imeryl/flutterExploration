@@ -26,6 +26,7 @@ class CategoryScreen extends StatelessWidget {
       body: ListView.builder(
         itemBuilder: (context, index) {
           return RecipeItem(
+            id: filteredRecipes[index].id,
             title: filteredRecipes[index].title,
             complexity: filteredRecipes[index].complexity,
             imageUrl: filteredRecipes[index].imageUrl,

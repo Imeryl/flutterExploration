@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../models/recipe.dart';
+import '../screens/recipe_screen.dart';
 
 class RecipeItem extends StatelessWidget {
+  final String id;
   final String title;
   final String imageUrl;
   final int duration;
@@ -10,6 +12,7 @@ class RecipeItem extends StatelessWidget {
 
   const RecipeItem({
     super.key,
+    required this.id,
     required this.title,
     required this.imageUrl,
     required this.complexity,
@@ -29,12 +32,17 @@ class RecipeItem extends StatelessWidget {
     }
   }
 
-  void _selectMeal() {}
+  void _selectRecipe(BuildContext context) {
+    Navigator.of(context).pushNamed(
+      RecipeScreen.routeName,
+      arguments: id,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: _selectMeal,
+      onTap: () => _selectRecipe(context),
       child: Card(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
