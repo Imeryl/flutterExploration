@@ -23,6 +23,8 @@ class MyApp extends StatelessWidget {
         CategoryScreen.routeName: (context) => CategoryScreen(),
         RecipeScreen.routeName: (context) => RecipeScreen(),
       },
+      onUnknownRoute: (settings) =>
+          MaterialPageRoute(builder: (context) => CategoriesScreen()),
     );
   }
 }
