@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'screens/category_screen.dart';
 import 'screens/categories_screen.dart';
 import 'screens/recipe_screen.dart';
+import 'screens/tabs_screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.blueGrey,
       ),
       routes: {
-        '/': (context) => CategoriesScreen(),
+        '/': (context) => TabsScreen(),
         CategoryScreen.routeName: (context) => CategoryScreen(),
         RecipeScreen.routeName: (context) => RecipeScreen(),
       },
