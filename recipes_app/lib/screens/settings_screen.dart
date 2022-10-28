@@ -4,7 +4,10 @@ import '../widgets/main_drawer.dart';
 
 class SettingsScreen extends StatefulWidget {
   static const routeName = '/settings';
-  const SettingsScreen({super.key});
+
+  final Function(Map<String, bool>) saveSettings;
+
+  const SettingsScreen(this.saveSettings);
 
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
@@ -29,6 +32,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actions: <Widget>[
+          IconButton(
+            onPressed: () => widget.saveSettings({
+              'gluten': _glutenFree,
+              'lactose': _lactoseFree,
+              'vegan': _vegan,
+              'vegetarian': _vegetarian,
+            }),
+            icon: Icon(Icons.save),
+          ),
+        ],
         title: Text('Settings'),
       ),
       drawer: MainDrawer(),
