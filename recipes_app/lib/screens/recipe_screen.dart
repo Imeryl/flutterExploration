@@ -77,6 +77,11 @@ class RecipeScreen extends StatelessWidget {
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.red,
+        child: Icon(Icons.delete),
+        onPressed: () => Navigator.of(context).pop(recipeId),
+      ),
     );
   }
 }

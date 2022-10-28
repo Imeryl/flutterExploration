@@ -1,22 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_complete_guide/models/recipe.dart';
 
 import '../dummy_data.dart';
 import '../widgets/recipe_item.dart';
 
-class CategoryScreen extends StatelessWidget {
+class CategoryScreen extends StatefulWidget {
   static const routeName = '/category';
 
   @override
-  Widget build(BuildContext context) {
+  State<CategoryScreen> createState() => _CategoryScreenState();
+}
+
+class _CategoryScreenState extends State<CategoryScreen> {
+  String categoryTitle = '';
+  List<Recipe> filteredRecipes = [];
+
+  void _removeRecipe(String recipeId) {
+    setState(
+        () => filteredRecipes.removeWhere((recipe) => recipe.id == recipeId));
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     final routeArgs =
         ModalRoute.of(context)?.settings.arguments as Map<String, String>;
     final String categoryId = routeArgs['id'] ?? '';
-    final String categoryTitle = routeArgs['title'] ?? '';
+    categoryTitle = routeArgs['title'] ?? '';
 
-    final filteredRecipes = DUMMY_RECIPES
+    filteredRecipes = DUMMY_RECIPES
         .where((recipe) => recipe.categoryIds.contains(categoryId))
         .toList();
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -31,6 +49,7 @@ class CategoryScreen extends StatelessWidget {
             complexity: filteredRecipes[index].complexity,
             imageUrl: filteredRecipes[index].imageUrl,
             duration: filteredRecipes[index].duration,
+            removeItem: _removeRecipe,
           );
         },
         itemCount: filteredRecipes.length,
