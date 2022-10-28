@@ -18,7 +18,6 @@ class MyApp extends StatelessWidget {
           primary: Colors.purple,
         ),
         fontFamily: 'Raleway',
-        scaffoldBackgroundColor: Colors.blueGrey,
       ),
       routes: {
         '/': (context) => TabsScreen(),
