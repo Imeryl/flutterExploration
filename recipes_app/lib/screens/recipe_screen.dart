@@ -5,7 +5,10 @@ import '../dummy_data.dart';
 class RecipeScreen extends StatelessWidget {
   static const routeName = '/recipe';
 
-  const RecipeScreen({super.key});
+  final Function isFavourite;
+  final Function toggleFavourite;
+
+  const RecipeScreen(this.toggleFavourite, this.isFavourite);
 
   Container buildList(List list) {
     return Container(
@@ -79,8 +82,8 @@ class RecipeScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.red,
-        child: Icon(Icons.delete),
-        onPressed: () => Navigator.of(context).pop(recipeId),
+        child: Icon(isFavourite(recipeId) ? Icons.star : Icons.star_border),
+        onPressed: () => toggleFavourite(recipeId),
       ),
     );
   }

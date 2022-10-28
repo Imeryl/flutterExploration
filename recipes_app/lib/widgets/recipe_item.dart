@@ -9,7 +9,6 @@ class RecipeItem extends StatelessWidget {
   final String imageUrl;
   final int duration;
   final Complexity complexity;
-  final Function removeItem;
 
   const RecipeItem({
     super.key,
@@ -18,7 +17,6 @@ class RecipeItem extends StatelessWidget {
     required this.imageUrl,
     required this.complexity,
     required this.duration,
-    required this.removeItem,
   });
 
   String get complexityText {
@@ -35,14 +33,10 @@ class RecipeItem extends StatelessWidget {
   }
 
   void _selectRecipe(BuildContext context) {
-    Navigator.of(context)
-        .pushNamed(
-          RecipeScreen.routeName,
-          arguments: id,
-        )
-        .then(
-          (result) => (result != null) ? removeItem(result) : null,
-        );
+    Navigator.of(context).pushNamed(
+      RecipeScreen.routeName,
+      arguments: id,
+    );
   }
 
   @override

@@ -52,7 +52,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
             complexity: filteredRecipes[index].complexity,
             imageUrl: filteredRecipes[index].imageUrl,
             duration: filteredRecipes[index].duration,
-            removeItem: _removeRecipe,
           );
         },
         itemCount: filteredRecipes.length,
