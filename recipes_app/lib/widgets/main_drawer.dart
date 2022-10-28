@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../screens/settings_screen.dart';
+
 class MainDrawer extends StatelessWidget {
   const MainDrawer({super.key});
-
-  void _selectPage() {}
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,7 @@ class MainDrawer extends StatelessWidget {
               Icons.restaurant,
               size: 24,
             ),
-            onTap: _selectPage,
+            onTap: () => Navigator.of(context).pushReplacementNamed('/'),
             title: Text('Recipes'),
           ),
           ListTile(
@@ -39,7 +39,9 @@ class MainDrawer extends StatelessWidget {
               Icons.settings,
               size: 24,
             ),
-            onTap: _selectPage,
+            onTap: () => Navigator.of(context).pushReplacementNamed(
+              SettingsScreen.routeName,
+            ),
             title: Text('Settings'),
           ),
         ],
