@@ -55,7 +55,8 @@ class _MyAppState extends State<MyApp> {
         CategoryScreen.routeName: (context) =>
             CategoryScreen(_availableRecipes),
         RecipeScreen.routeName: (context) => RecipeScreen(),
-        SettingsScreen.routeName: (context) => SettingsScreen(_setSettings),
+        SettingsScreen.routeName: (context) =>
+            SettingsScreen(_setSettings, _settings),
       },
       onUnknownRoute: (settings) =>
           MaterialPageRoute(builder: (context) => CategoriesScreen()),
