@@ -56,4 +56,9 @@ class Cart with ChangeNotifier {
     }
     notifyListeners();
   }
+
+  void removeItem(String id) {
+    _items.removeWhere((key, item) => item.id == id);
+    notifyListeners();
+  }
 }

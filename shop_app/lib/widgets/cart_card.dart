@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../providers/cart.dart';
 import '../providers/products.dart';
 
 class CartCard extends StatelessWidget {
@@ -19,21 +20,32 @@ class CartCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cart = Provider.of<Cart>(context);
     final product = Provider.of<Products>(
       context,
       listen: false,
     ).findById(productId);
 
-    return Card(
-      margin: EdgeInsets.symmetric(
-        horizontal: 15,
-        vertical: 4,
+    return Dismissible(
+      background: Container(
+        child: Icon(
+          Icons.delete,
+        ),
       ),
-      child: Padding(
-        padding: EdgeInsets.all(8),
-        child: ListTile(
-          title: Text('${product.name} x${quantity}'),
-          trailing: Text('£${(price * quantity)}'),
+      direction: DismissDirection.endToStart,
+      key: ValueKey(id),
+      onDismissed: (_) => cart.removeItem(id),
+      child: Card(
+        margin: EdgeInsets.symmetric(
+          horizontal: 15,
+          vertical: 4,
+        ),
+        child: Padding(
+          padding: EdgeInsets.all(8),
+          child: ListTile(
+            title: Text('${product.name} x${quantity}'),
+            trailing: Text('£${(price * quantity)}'),
+          ),
         ),
       ),
     );
