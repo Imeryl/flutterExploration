@@ -20,17 +20,22 @@ class CartCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cart = Provider.of<Cart>(context);
+    final cart = Provider.of<Cart>(
+      context,
+      listen: false,
+    );
     final product = Provider.of<Products>(
       context,
       listen: false,
     ).findById(productId);
 
     return Dismissible(
-      background: Container(
+      background: ColoredBox(
         child: Icon(
           Icons.delete,
+          color: Theme.of(context).colorScheme.onError,
         ),
+        color: Theme.of(context).colorScheme.error,
       ),
       direction: DismissDirection.endToStart,
       key: ValueKey(id),
