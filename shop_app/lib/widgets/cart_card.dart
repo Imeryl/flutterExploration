@@ -37,6 +37,23 @@ class CartCard extends StatelessWidget {
         ),
         color: Theme.of(context).colorScheme.error,
       ),
+      confirmDismiss: (direction) => showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text('No'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              child: Text('Yes'),
+            ),
+          ],
+          title: Text('Are you sure?'),
+          content: Text('Do you want to remove the item from the cart?'),
+        ),
+      ),
       direction: DismissDirection.endToStart,
       key: ValueKey(id),
       onDismissed: (_) => cart.removeItem(id),
