@@ -38,10 +38,11 @@ class Cart with ChangeNotifier {
       _items.update(
         productId,
         (existingItem) => CartItem(
-            id: existingItem.id,
-            price: existingItem.price,
-            productId: existingItem.productId,
-            quantity: existingItem.quantity + 1),
+          id: existingItem.id,
+          price: existingItem.price,
+          productId: existingItem.productId,
+          quantity: existingItem.quantity + 1,
+        ),
       );
     } else {
       _items.putIfAbsent(
@@ -64,6 +65,26 @@ class Cart with ChangeNotifier {
 
   void removeItem(String id) {
     _items.removeWhere((key, item) => item.id == id);
+    notifyListeners();
+  }
+
+  void removeSingleItem(String productId) {
+    if (!_items.containsKey(productId)) return;
+
+    if (_items[productId]?.quantity as int > 1) {
+      _items.update(
+        productId,
+        (existingItem) => CartItem(
+          id: existingItem.id,
+          price: existingItem.price,
+          productId: existingItem.productId,
+          quantity: existingItem.quantity - 1,
+        ),
+      );
+    } else {
+      _items.removeWhere((key, item) => item.productId == productId);
+    }
+
     notifyListeners();
   }
 }
