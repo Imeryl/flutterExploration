@@ -22,7 +22,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
   );
 
   void _saveForm() {
-    _form.currentState!.save();
+    if (_form.currentState!.validate()) {
+      _form.currentState!.save();
+    }
   }
 
   @override
@@ -55,6 +57,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
                   imageUrl: _editedProduct.imageUrl,
                 ),
                 textInputAction: TextInputAction.next,
+                validator: (value) => (value as String).isEmpty
+                    ? 'Please provide a value.'
+                    : null,
               ),
               TextFormField(
                 decoration: InputDecoration(
@@ -69,6 +74,17 @@ class _EditProductScreenState extends State<EditProductScreen> {
                   imageUrl: _editedProduct.imageUrl,
                 ),
                 textInputAction: TextInputAction.next,
+                validator: (value) {
+                  if ((value as String).isEmpty) {
+                    return 'Please enter a price.';
+                  } else if (double.parse(value).isNaN) {
+                    return 'Please enter a valid number.';
+                  } else if (double.parse(value) <= 0) {
+                    return 'Please enter a number greater than 0';
+                  } else {
+                    return null;
+                  }
+                },
               ),
               TextFormField(
                 decoration: InputDecoration(
@@ -83,6 +99,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
                   price: _editedProduct.price,
                   imageUrl: _editedProduct.imageUrl,
                 ),
+                validator: (value) => (value as String).isEmpty
+                    ? 'Please provide a value.'
+                    : null,
               ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
@@ -125,6 +144,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
                         imageUrl: value as String,
                       ),
                       textInputAction: TextInputAction.done,
+                      validator: (value) => (value as String).isEmpty
+                          ? 'Please provide a value.'
+                          : null,
                     ),
                   )
                 ],
