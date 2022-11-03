@@ -60,4 +60,32 @@ class Orders with ChangeNotifier {
       throw error;
     });
   }
+
+  Future<void> fetchOrders() {
+    final url = Uri.parse(
+        'https://flutter-udemy-cead0-default-rtdb.europe-west1.firebasedatabase.app/orders.json');
+
+    return http.get(url).then(
+      (response) {
+        final data = json.decode(response.body) as Map<String, dynamic>;
+        _orders = [];
+        data.forEach((orderId, orderData) {
+          _orders.add(Order(
+            amount: orderData['amount'],
+            dateTime: DateTime.parse(orderData['dateTime']),
+            id: orderId,
+            products: (orderData['products'] as List<dynamic>)
+                .map((item) => CartItem(
+                      id: item['id'],
+                      price: item['price'],
+                      productId: item['productId'],
+                      quantity: item['quantity'],
+                    ))
+                .toList(),
+          ));
+        });
+        notifyListeners();
+      },
+    );
+  }
 }
