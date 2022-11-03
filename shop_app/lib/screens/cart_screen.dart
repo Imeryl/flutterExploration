@@ -5,9 +5,16 @@ import '../providers/cart.dart';
 import '../providers/orders.dart';
 import '../widgets/cart_card.dart';
 
-class CartScreen extends StatelessWidget {
+class CartScreen extends StatefulWidget {
   static const routeName = '/cart';
   const CartScreen({super.key});
+
+  @override
+  State<CartScreen> createState() => _CartScreenState();
+}
+
+class _CartScreenState extends State<CartScreen> {
+  var _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -27,17 +34,28 @@ class CartScreen extends StatelessWidget {
                   right: 15,
                 ),
                 child: ElevatedButton(
-                  onPressed: () {
-                    Provider.of<Orders>(
-                      context,
-                      listen: false,
-                    ).addOrder(
-                      cart.items.values.toList(),
-                      cart.totalAmount,
-                    );
-                    cart.clearCart();
-                  },
-                  child: Text('Order now'),
+                  onPressed: cart.totalAmount <= 0 || _isLoading
+                      ? null
+                      : () {
+                          setState(() => _isLoading = true);
+                          Provider.of<Orders>(
+                            context,
+                            listen: false,
+                          )
+                              .addOrder(
+                            cart.items.values.toList(),
+                            cart.totalAmount,
+                          )
+                              .then(
+                            (value) {
+                              setState(() => _isLoading = false);
+                              cart.clearCart();
+                            },
+                          );
+                        },
+                  child: _isLoading
+                      ? CircularProgressIndicator()
+                      : Text('Order now'),
                 ),
               ),
             ],
