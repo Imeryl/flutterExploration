@@ -77,9 +77,24 @@ class Products with ChangeNotifier {
     );
   }
 
-  void updateProduct(String id, Product product) {
-    final prodIndex = _products.indexWhere((product) => product.id == id);
-    _products[prodIndex] = product;
-    notifyListeners();
+  Future<void> updateProduct(String id, Product product) {
+    final url = Uri.parse(
+        'https://flutter-udemy-cead0-default-rtdb.europe-west1.firebasedatabase.app/products/${id}.json');
+    return http
+        .patch(
+      url,
+      body: json.encode({
+        'description': product.description,
+        'imageUrl': product.imageUrl,
+        'isFavourite': product.isFavourite,
+        'name': product.name,
+        'price': product.price,
+      }),
+    )
+        .then((value) {
+      final prodIndex = _products.indexWhere((product) => product.id == id);
+      _products[prodIndex] = product;
+      notifyListeners();
+    });
   }
 }
