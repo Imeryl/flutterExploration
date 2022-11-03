@@ -49,9 +49,13 @@ class Products with ChangeNotifier {
     });
   }
 
-  void deleteProduct(String id) {
-    _products.removeWhere((product) => product.id == id);
-    notifyListeners();
+  Future<void> deleteProduct(String id) {
+    final url = Uri.parse(
+        'https://flutter-udemy-cead0-default-rtdb.europe-west1.firebasedatabase.app/products/${id}.json');
+    return http.delete(url).then((value) {
+      _products.removeWhere((product) => product.id == id);
+      notifyListeners();
+    });
   }
 
   Future<void> fetchProducts() {
