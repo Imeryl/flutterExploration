@@ -8,6 +8,22 @@ class Auth with ChangeNotifier {
   DateTime? _expiryDate;
   String userId = '';
 
+  Future<void> login(String email, String password) {
+    final url = Uri.parse(
+        'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAVHfcW-07vTrleHQ6WWZl7Oy7DG5nVfOc');
+    return http
+        .post(
+          url,
+          body: json.encode({
+            'email': email,
+            'password': password,
+            'returnSecureToken': true,
+          }),
+        )
+        .then((value) {})
+        .catchError((error) {});
+  }
+
   Future<void> signup(String email, String password) {
     final url = Uri.parse(
         'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyAVHfcW-07vTrleHQ6WWZl7Oy7DG5nVfOc');
@@ -17,7 +33,7 @@ class Auth with ChangeNotifier {
           body: json.encode({
             'email': email,
             'password': password,
-            'returnSecureToke': true,
+            'returnSecureToken': true,
           }),
         )
         .then((value) {})

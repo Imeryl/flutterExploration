@@ -110,7 +110,10 @@ class _AuthCardState extends State<AuthCard> {
       _isLoading = true;
     });
     if (_authMode == AuthMode.Login) {
-      // Log user in
+      Provider.of<Auth>(
+        context,
+        listen: false,
+      ).login(_authData['email'] as String, _authData['password'] as String);
     } else {
       Provider.of<Auth>(
         context,
