@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_complete_guide/models/httpexception.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/auth.dart';
@@ -100,7 +101,7 @@ class _AuthCardState extends State<AuthCard> {
   var _isLoading = false;
   final _passwordController = TextEditingController();
 
-  void _submit() {
+  void _submit() async {
     if (!_formKey.currentState!.validate()) {
       // Invalid!
       return;
@@ -109,16 +110,24 @@ class _AuthCardState extends State<AuthCard> {
     setState(() {
       _isLoading = true;
     });
-    if (_authMode == AuthMode.Login) {
-      Provider.of<Auth>(
-        context,
-        listen: false,
-      ).login(_authData['email'] as String, _authData['password'] as String);
-    } else {
-      Provider.of<Auth>(
-        context,
-        listen: false,
-      ).signup(_authData['email'] as String, _authData['password'] as String);
+    try {
+      if (_authMode == AuthMode.Login) {
+        await Provider.of<Auth>(
+          context,
+          listen: false,
+        ).login(_authData['email'] as String, _authData['password'] as String);
+      } else {
+        await Provider.of<Auth>(
+          context,
+          listen: false,
+        ).signup(_authData['email'] as String, _authData['password'] as String);
+      }
+    } on HttpException catch (error) {
+      var errorMessage = 'Authentication failed';
+      switch (error.toString()) {
+      }
+    } catch (error) {
+      var errorMessage = 'Authentication failed';
     }
     setState(() {
       _isLoading = false;
