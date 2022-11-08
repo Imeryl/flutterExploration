@@ -25,7 +25,7 @@ class Products with ChangeNotifier {
 
   Future<void> addProduct(Product product) {
     final url = Uri.parse(
-        'https://flutter-udemy-cead0-default-rtdb.europe-west1.firebasedatabase.app/products.json');
+        'https://flutter-udemy-cead0-default-rtdb.europe-west1.firebasedatabase.app/products.json?auth=$authToken');
     return http
         .post(
       url,
@@ -54,7 +54,7 @@ class Products with ChangeNotifier {
 
   Future<void> deleteProduct(String id) {
     final url = Uri.parse(
-        'https://flutter-udemy-cead0-default-rtdb.europe-west1.firebasedatabase.app/products/${id}.json');
+        'https://flutter-udemy-cead0-default-rtdb.europe-west1.firebasedatabase.app/products/${id}.json?auth=$authToken');
     return http.delete(url).then((value) {
       _products.removeWhere((product) => product.id == id);
       notifyListeners();
@@ -84,9 +84,27 @@ class Products with ChangeNotifier {
     );
   }
 
+  Future<void> toggleFavourite(String id) {
+    var product = findById(id);
+    product.toggleFavourite();
+    final url = Uri.parse(
+        'https://flutter-udemy-cead0-default-rtdb.europe-west1.firebasedatabase.app/products/${id}.json?auth=$authToken');
+    return http
+        .patch(
+      url,
+      body: json.encode({
+        'isFavourite': product.isFavourite,
+      }),
+    )
+        .catchError((error) {
+      product.toggleFavourite();
+      throw error;
+    });
+  }
+
   Future<void> updateProduct(String id, Product product) {
     final url = Uri.parse(
-        'https://flutter-udemy-cead0-default-rtdb.europe-west1.firebasedatabase.app/products/${id}.json');
+        'https://flutter-udemy-cead0-default-rtdb.europe-west1.firebasedatabase.app/products/${id}.json?auth=$authToken');
     return http
         .patch(
       url,

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../providers/cart.dart';
 import '../providers/product.dart';
+import '../providers/products.dart';
 import '../screens/product_screen.dart';
 
 class ProductItem extends StatelessWidget {
@@ -35,7 +36,10 @@ class ProductItem extends StatelessWidget {
             icon: Icon(
               product.isFavourite ? Icons.favorite : Icons.favorite_border,
             ),
-            onPressed: Provider.of<Product>(context).toggleFavourite,
+            onPressed: () => Provider.of<Products>(
+              context,
+              listen: false,
+            ).toggleFavourite(product.id),
           ),
         ),
         title: Text(
