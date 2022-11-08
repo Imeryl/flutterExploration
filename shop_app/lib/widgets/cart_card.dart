@@ -66,7 +66,7 @@ class CartCard extends StatelessWidget {
           padding: EdgeInsets.all(8),
           child: ListTile(
             title: Text('${product.name} x${quantity}'),
-            trailing: Text('£${(price * quantity)}'),
+            trailing: Text('£${(price * quantity).toStringAsFixed(2)}'),
           ),
         ),
       ),
