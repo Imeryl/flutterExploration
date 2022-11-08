@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+
+import 'add_place_screen.dart';
 
 class PlacesListScreen extends StatelessWidget {
   const PlacesListScreen({super.key});
@@ -11,7 +11,8 @@ class PlacesListScreen extends StatelessWidget {
       appBar: AppBar(
         actions: <Widget>[
           IconButton(
-            onPressed: () {},
+            onPressed: () =>
+                Navigator.of(context).pushNamed(AddPlaceScreen.routeName),
             icon: Icon(Icons.add),
           ),
         ],
