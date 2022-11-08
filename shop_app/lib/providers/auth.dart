@@ -9,43 +9,33 @@ class Auth with ChangeNotifier {
   DateTime? _expiryDate;
   String userId = '';
 
-  Future<void> login(String email, String password) {
-    final url = Uri.parse(
-        'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAVHfcW-07vTrleHQ6WWZl7Oy7DG5nVfOc');
-    return http
-        .post(
-      url,
-      body: json.encode({
-        'email': email,
-        'password': password,
-        'returnSecureToken': true,
-      }),
-    )
-        .then((response) {
+  Future<void> _authenticateUser(
+      String email, String password, String endpoint) async {
+    final uri = Uri.parse(
+        'https://identitytoolkit.googleapis.com/v1/accounts:${endpoint}?key=AIzaSyAVHfcW-07vTrleHQ6WWZl7Oy7DG5nVfOc');
+    try {
+      final response = await http.post(
+        uri,
+        body: json.encode({
+          'email': email,
+          'password': password,
+          'returnSecureToken': true,
+        }),
+      );
       final responseData = json.decode(response.body);
       if (responseData['error'] != null) {
         throw HttpException(responseData['error']['message']);
       }
-    }).catchError((error) {});
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  Future<void> login(String email, String password) {
+    return _authenticateUser(email, password, 'signInWithPassword');
   }
 
   Future<void> signup(String email, String password) {
-    final url = Uri.parse(
-        'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyAVHfcW-07vTrleHQ6WWZl7Oy7DG5nVfOc');
-    return http
-        .post(
-      url,
-      body: json.encode({
-        'email': email,
-        'password': password,
-        'returnSecureToken': true,
-      }),
-    )
-        .then((response) {
-      final responseData = json.decode(response.body);
-      if (responseData['error'] != null) {
-        throw HttpException(responseData['error']['message']);
-      }
-    }).catchError((error) {});
+    return _authenticateUser(email, password, 'signUp');
   }
 }

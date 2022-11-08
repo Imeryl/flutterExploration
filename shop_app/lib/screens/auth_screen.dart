@@ -101,6 +101,22 @@ class _AuthCardState extends State<AuthCard> {
   var _isLoading = false;
   final _passwordController = TextEditingController();
 
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (builderContext) => AlertDialog(
+        actions: <Widget>[
+          TextButton(
+            child: Text('Okay'),
+            onPressed: () => Navigator.of(builderContext).pop(),
+          ),
+        ],
+        content: Text(message),
+        title: Text('Authentication failed'),
+      ),
+    );
+  }
+
   void _submit() async {
     if (!_formKey.currentState!.validate()) {
       // Invalid!
@@ -124,11 +140,26 @@ class _AuthCardState extends State<AuthCard> {
       }
     } on HttpException catch (error) {
       var errorMessage = 'Authentication failed';
+      print(error.toString());
       switch (error.toString()) {
+        case 'EMAIL_EXISTS':
+          errorMessage = 'This email address is already in use.';
+          break;
+
+        case 'EMAIL_NOT_FOUND':
+          errorMessage = 'Email address not found.';
+          break;
+
+        case 'INVALID_PASSWORD':
+          errorMessage = 'Password is invalid';
+          break;
       }
+      _showErrorDialog(errorMessage);
     } catch (error) {
-      var errorMessage = 'Authentication failed';
+      print('catch');
+      _showErrorDialog('Authentication failed.');
     }
+    print('hi');
     setState(() {
       _isLoading = false;
     });
