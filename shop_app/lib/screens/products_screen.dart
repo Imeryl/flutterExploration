@@ -82,6 +82,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
               child: CircularProgressIndicator(),
             )
           : ProductsGrid(_showFavourites),
+      drawerEnableOpenDragGesture: true,
     );
   }
 }

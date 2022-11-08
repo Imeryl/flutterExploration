@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -5,6 +6,7 @@ import 'package:flutter_complete_guide/models/httpexception.dart';
 import 'package:http/http.dart' as http;
 
 class Auth with ChangeNotifier {
+  Timer? _authTimer;
   String? _token;
   DateTime? _expiryDate;
   String? _userId;
@@ -52,10 +54,17 @@ class Auth with ChangeNotifier {
           seconds: int.parse(responseData['expiresIn']),
         ),
       );
+      _autoLogout();
       notifyListeners();
     } catch (error) {
       throw error;
     }
+  }
+
+  void _autoLogout() {
+    if (_authTimer != null) _authTimer?.cancel();
+    final timeToexpiry = _expiryDate?.difference(DateTime.now()).inSeconds;
+    _authTimer = Timer(Duration(seconds: timeToexpiry ?? 0), logout);
   }
 
   Future<void> login(String email, String password) {
@@ -66,6 +75,10 @@ class Auth with ChangeNotifier {
     _expiryDate = null;
     _token = null;
     _userId = null;
+    if (_authTimer != null) {
+      _authTimer?.cancel();
+      _authTimer = null;
+    }
     notifyListeners();
   }
 
