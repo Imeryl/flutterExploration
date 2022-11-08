@@ -8,8 +8,9 @@ import 'product.dart';
 class Products with ChangeNotifier {
   List<Product> _products = [];
   final String? authToken;
+  final String? userId;
 
-  Products(this.authToken, this._products);
+  Products(this.authToken, this._products, this.userId);
 
   List<Product> get favouriteProducts {
     return _products.where((product) => product.isFavourite).toList();
@@ -32,7 +33,6 @@ class Products with ChangeNotifier {
       body: json.encode({
         'description': product.description,
         'imageUrl': product.imageUrl,
-        'isFavourite': product.isFavourite,
         'name': product.name,
         'price': product.price,
       }),
@@ -61,40 +61,42 @@ class Products with ChangeNotifier {
     });
   }
 
-  Future<void> fetchProducts() {
+  Future<void> fetchProducts() async {
     final url = Uri.parse(
         'https://flutter-udemy-cead0-default-rtdb.europe-west1.firebasedatabase.app/products.json?auth=$authToken');
 
-    return http.get(url).then(
-      (response) {
-        final data = json.decode(response.body) as Map<String, dynamic>;
-        _products = [];
-        data.forEach((productId, productData) {
-          _products.add(Product(
-            description: productData['description'],
-            id: productId,
-            imageUrl: productData['imageUrl'],
-            isFavourite: productData['isFavourite'],
-            name: productData['name'],
-            price: productData['price'],
-          ));
-        });
-        notifyListeners();
-      },
-    );
+    try {
+      final response = await http.get(url);
+      final responseData = json.decode(response.body) as Map<String, dynamic>;
+      final favouriteResponse = await http.get(Uri.parse(
+          'https://flutter-udemy-cead0-default-rtdb.europe-west1.firebasedatabase.app/userFavourites/$userId.json?auth=$authToken'));
+      final favouriteData = json.decode(favouriteResponse.body);
+      final List<Product> _products = [];
+      responseData.forEach((productId, productData) {
+        _products.add(Product(
+          description: productData['description'],
+          id: productId,
+          imageUrl: productData['imageUrl'],
+          isFavourite: favouriteData[productId] ?? false,
+          name: productData['name'],
+          price: productData['price'],
+        ));
+      });
+      notifyListeners();
+    } catch (error) {
+      throw error;
+    }
   }
 
   Future<void> toggleFavourite(String id) {
     var product = findById(id);
     product.toggleFavourite();
     final url = Uri.parse(
-        'https://flutter-udemy-cead0-default-rtdb.europe-west1.firebasedatabase.app/products/${id}.json?auth=$authToken');
+        'https://flutter-udemy-cead0-default-rtdb.europe-west1.firebasedatabase.app/userFavourites/$userId/${id}.json?auth=$authToken');
     return http
-        .patch(
+        .put(
       url,
-      body: json.encode({
-        'isFavourite': product.isFavourite,
-      }),
+      body: json.encode(product.isFavourite),
     )
         .catchError((error) {
       product.toggleFavourite();
