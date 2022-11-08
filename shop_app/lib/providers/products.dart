@@ -7,6 +7,9 @@ import 'product.dart';
 
 class Products with ChangeNotifier {
   List<Product> _products = [];
+  final String? authToken;
+
+  Products(this.authToken, this._products);
 
   List<Product> get favouriteProducts {
     return _products.where((product) => product.isFavourite).toList();
@@ -60,7 +63,7 @@ class Products with ChangeNotifier {
 
   Future<void> fetchProducts() {
     final url = Uri.parse(
-        'https://flutter-udemy-cead0-default-rtdb.europe-west1.firebasedatabase.app/products.json');
+        'https://flutter-udemy-cead0-default-rtdb.europe-west1.firebasedatabase.app/products.json?auth=$authToken');
 
     return http.get(url).then(
       (response) {
