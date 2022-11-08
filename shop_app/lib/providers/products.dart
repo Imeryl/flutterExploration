@@ -35,15 +35,16 @@ class Products with ChangeNotifier {
         'imageUrl': product.imageUrl,
         'name': product.name,
         'price': product.price,
+        'userId': userId,
       }),
     )
         .then((response) {
       final newProduct = Product(
-        id: json.decode(response.body)['name'],
-        name: product.name,
         description: product.description,
-        price: product.price,
+        id: json.decode(response.body)['name'],
         imageUrl: product.imageUrl,
+        name: product.name,
+        price: product.price,
       );
       _products.add(newProduct);
       notifyListeners();
@@ -61,9 +62,11 @@ class Products with ChangeNotifier {
     });
   }
 
-  Future<void> fetchProducts() async {
+  Future<void> fetchProducts([bool filterByUser = false]) async {
+    final queryString = '?auth=$authToken' +
+        (filterByUser ? '&orderBy="userId"&equalTo="$userId"' : '');
     final url = Uri.parse(
-        'https://flutter-udemy-cead0-default-rtdb.europe-west1.firebasedatabase.app/products.json?auth=$authToken');
+        'https://flutter-udemy-cead0-default-rtdb.europe-west1.firebasedatabase.app/products.json$queryString');
 
     try {
       final response = await http.get(url);
@@ -71,13 +74,14 @@ class Products with ChangeNotifier {
       final favouriteResponse = await http.get(Uri.parse(
           'https://flutter-udemy-cead0-default-rtdb.europe-west1.firebasedatabase.app/userFavourites/$userId.json?auth=$authToken'));
       final favouriteData = json.decode(favouriteResponse.body);
-      final List<Product> _products = [];
+      _products = [];
       responseData.forEach((productId, productData) {
         _products.add(Product(
           description: productData['description'],
           id: productId,
           imageUrl: productData['imageUrl'],
-          isFavourite: favouriteData[productId] ?? false,
+          isFavourite:
+              favouriteData == null ? false : favouriteData[productId] ?? false,
           name: productData['name'],
           price: productData['price'],
         ));

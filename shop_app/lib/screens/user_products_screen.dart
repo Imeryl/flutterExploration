@@ -10,10 +10,15 @@ class UserProductsScreen extends StatelessWidget {
   static const routeName = '/userProducts';
   const UserProductsScreen({super.key});
 
+  Future<void> _refreshProducts(BuildContext context) async {
+    await Provider.of<Products>(
+      context,
+      listen: false,
+    ).fetchProducts(true);
+  }
+
   @override
   Widget build(BuildContext context) {
-    final productsProvider = Provider.of<Products>(context);
-
     return Scaffold(
       appBar: AppBar(
         actions: <Widget>[
@@ -26,27 +31,34 @@ class UserProductsScreen extends StatelessWidget {
         title: Text('Your products'),
       ),
       drawer: AppDrawer(),
-      body: RefreshIndicator(
-        onRefresh: Provider.of<Products>(
-          context,
-          listen: false,
-        ).fetchProducts,
-        child: Padding(
-          padding: EdgeInsets.all(8),
-          child: ListView.builder(
-            itemBuilder: (context, index) => Column(
-              children: [
-                UserProduct(
-                  id: productsProvider.products[index].id,
-                  imageUrl: productsProvider.products[index].imageUrl,
-                  name: productsProvider.products[index].name,
+      body: FutureBuilder(
+        future: _refreshProducts(context),
+        builder: (ctx, snapshot) => snapshot.connectionState ==
+                ConnectionState.waiting
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : RefreshIndicator(
+                onRefresh: () => _refreshProducts(context),
+                child: Consumer<Products>(
+                  builder: (ctx, productsProvider, _) => Padding(
+                    padding: EdgeInsets.all(8),
+                    child: ListView.builder(
+                      itemBuilder: (context, index) => Column(
+                        children: [
+                          UserProduct(
+                            id: productsProvider.products[index].id,
+                            imageUrl: productsProvider.products[index].imageUrl,
+                            name: productsProvider.products[index].name,
+                          ),
+                          Divider(),
+                        ],
+                      ),
+                      itemCount: productsProvider.products.length,
+                    ),
+                  ),
                 ),
-                Divider(),
-              ],
-            ),
-            itemCount: productsProvider.products.length,
-          ),
-        ),
+              ),
       ),
     );
   }

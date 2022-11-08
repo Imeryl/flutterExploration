@@ -140,7 +140,6 @@ class _AuthCardState extends State<AuthCard> {
       }
     } on HttpException catch (error) {
       var errorMessage = 'Authentication failed';
-      print(error.toString());
       switch (error.toString()) {
         case 'EMAIL_EXISTS':
           errorMessage = 'This email address is already in use.';
@@ -156,10 +155,8 @@ class _AuthCardState extends State<AuthCard> {
       }
       _showErrorDialog(errorMessage);
     } catch (error) {
-      print('catch');
       _showErrorDialog('Authentication failed.');
     }
-    print('hi');
     setState(() {
       _isLoading = false;
     });

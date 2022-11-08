@@ -49,6 +49,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
     setState(() => _isLoading = true);
 
     if (_editedProduct.id.isEmpty) {
+      print(_editedProduct.toString());
       Provider.of<Products>(
         context,
         listen: false,
