@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../providers/places.dart';
 import 'add_place_screen.dart';
 
 class PlacesListScreen extends StatelessWidget {
@@ -18,7 +20,22 @@ class PlacesListScreen extends StatelessWidget {
         ],
         title: Text('Your places'),
       ),
-      body: Center(),
+      body: Consumer<Places>(
+        child: Center(
+          child: Text('No places'),
+        ),
+        builder: (context, places, child) => places.places.length <= 0
+            ? child as Widget
+            : ListView.builder(
+                itemBuilder: (context, i) => ListTile(
+                  leading: CircleAvatar(
+                    backgroundImage: FileImage(places.places[i].image),
+                  ),
+                  title: Text(places.places[i].name),
+                ),
+                itemCount: places.places.length,
+              ),
+      ),
     );
   }
 }

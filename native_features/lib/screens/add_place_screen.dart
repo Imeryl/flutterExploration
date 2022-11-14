@@ -1,5 +1,9 @@
-import 'package:flutter/material.dart';
+import 'dart:io';
 
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/places.dart';
 import '../widgets/image_input.dart';
 
 class AddPlaceScreen extends StatefulWidget {
@@ -13,6 +17,24 @@ class AddPlaceScreen extends StatefulWidget {
 
 class _AddPlaceScreenState extends State<AddPlaceScreen> {
   final _nameController = TextEditingController();
+  File? _pickedImage;
+
+  void _selectImage(File pickedImage) {
+    _pickedImage = pickedImage;
+  }
+
+  void _savePlace() {
+    if (_nameController.text.isEmpty || _pickedImage == null) {
+      return;
+    }
+
+    Provider.of<Places>(
+      context,
+      listen: false,
+    ).addPlace(_nameController.text, _pickedImage as File);
+
+    Navigator.of(context).pop();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,14 +60,14 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                     SizedBox(
                       height: 10,
                     ),
-                    ImageInput(),
+                    ImageInput(_selectImage),
                   ],
                 ),
               ),
             ),
           ),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: _savePlace,
             child: Text('Add place'),
           ),
         ],
